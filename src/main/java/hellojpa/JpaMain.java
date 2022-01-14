@@ -12,10 +12,21 @@ public class JpaMain{
         tx.begin();
         try{
             //저장
+            /**
+             * 비영속 상태
+             */
 //            Member member = new Member();
 //            member.setId(2L);
 //            member.setName("Hello2");
-//            em.persist(member);
+            /**
+             * 영속 상태
+             * DB에 저장되는 상태가 아니다!
+             */
+            System.out.println("===BEFORE===");
+//            em.persist(member); // 저장
+//            em.detach(member); // 삭제
+            System.out.println("===AFTER===");
+            //쿼리는 이 이후에 TX.COMMIT() 시점에 나간다!
             
             //조회
 //            Member findMember = em.find(Member.class, 1L);
