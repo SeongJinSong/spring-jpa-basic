@@ -15,23 +15,23 @@ public class JpaMain{
             /**
              * 비영속 상태
              */
-            Member member = new Member();
-            member.setId(1L);
-            member.setName("Hello1");
+//            Member member = new Member();
+//            member.setId(1L);
+//            member.setName("Hello1");
             /**
              * 영속 상태
              * DB에 저장되는 상태가 아니다!
              */
-            System.out.println("===BEFORE===");
-            em.persist(member); // 저장
+//            System.out.println("===BEFORE===");
+//            em.persist(member); // 저장
 //            em.detach(member); // 삭제
-            System.out.println("===AFTER===");
+//            System.out.println("===AFTER===");
             //쿼리는 이 이후에 TX.COMMIT() 시점에 나간다!
             
             //조회
-            Member findMember = em.find(Member.class, 1L);
-            System.out.println("findMember.getId() = " + findMember.getId());
-            System.out.println("findMember.getName() = " + findMember.getName());
+//            Member findMember = em.find(Member.class, 1L);
+//            System.out.println("findMember.getId() = " + findMember.getId());
+//            System.out.println("findMember.getName() = " + findMember.getName());
             //로그를 보면 조회용 SQL이 나가지 않는다.
             //1차 캐시에서 가져왔기 때문!
 
