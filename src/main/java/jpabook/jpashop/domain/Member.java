@@ -1,16 +1,21 @@
 package jpabook.jpashop.domain;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class Member {
     @Id @GeneratedValue
     @Column(name = "member_id")
     private Long id;
+    @Column(name = "user_name")
     private String name;
+//    @Column(name = "team_id")
+//    private Long teamId;
+
+    @ManyToOne
+    @JoinColumn(name = "team_id")
+    private Team team;
+
     private String city;
     private String street;
     private String zipcode;
@@ -52,5 +57,21 @@ public class Member {
 
     public void setZipcode(String zipcode) {
         this.zipcode = zipcode;
+    }
+
+//    public Long getTeamId() {
+//        return teamId;
+//    }
+//
+//    public void setTeamId(Long teamId) {
+//        this.teamId = teamId;
+//    }
+
+    public Team getTeam() {
+        return team;
+    }
+
+    public void setTeam(Team team) {
+        this.team = team;
     }
 }
