@@ -15,12 +15,13 @@ public class Order {
     @Column(name = "order_id")
     private Long id;
 
-//    @Column(name = "member_id")
-//    private Long memberId;
-
     @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member;
+
+    @OneToOne
+    @JoinColumn(name="delivery_id")
+    private Delivery delivery;
 
     @OneToMany(mappedBy = "order")
     private List<OrderItem> orderItems = new ArrayList<>();
@@ -43,14 +44,6 @@ public class Order {
     public void setId(Long id) {
         this.id = id;
     }
-
-//    public Long getMemberId() {
-//        return memberId;
-//    }
-
-//    public void setMemberId(Long memberId) {
-//        this.memberId = memberId;
-//    }
 
     public Member getMember() {
         return member;
