@@ -7,6 +7,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
+import java.util.List;
 
 public class JpaMain {
     public static void main(String[] args) {
@@ -53,7 +54,22 @@ public class JpaMain {
              * 수정
              */
             Team newTeam = em.find(Team.class, 1L);
-            findMember2.setTeam(newTeam);
+            //findMember2.setTeam(newTeam);
+
+            /**
+             * 양방향 연관관계
+             */
+            /*flush와 clear를 하지 않고 findMember2를 쓰면 안되는 이유는 뭘까?
+              flush랑clear를 안하면 위에서 설정한 members 컬렉션이 빈상태로 영속성 컨텍스트에 반영되고,
+              그것을 바로 사용했기 때문에 members 가 비어있던거였네요.
+            */
+            em.flush();
+            em.clear();
+            Member findMember3 = em.find(Member.class, member2.getId());
+            List<Member> members = findMember3.getTeam().getMembers();
+            for (Member member1 : members) {
+                System.out.println("member1.getName() = " + member1.getName());
+            }
 
             tx.commit();
         }catch(Exception e){
