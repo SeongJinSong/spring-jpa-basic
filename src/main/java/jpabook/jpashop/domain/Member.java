@@ -74,4 +74,13 @@ public class Member {
     public void setTeam(Team team) {
         this.team = team;
     }
+
+    /**
+     * 연관관계 편의 메서드로 만들자
+     *   > setter에 쓰기엔 관례상 오해의 소지가 있다.
+     */
+    public void changeTeam(Team team){
+        this.team = team;
+        team.getMembers().add(this);
+    }
 }

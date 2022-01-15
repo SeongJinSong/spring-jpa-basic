@@ -63,9 +63,26 @@ public class JpaMain {
               flush랑clear를 안하면 위에서 설정한 members 컬렉션이 빈상태로 영속성 컨텍스트에 반영되고,
               그것을 바로 사용했기 때문에 members 가 비어있던거였네요.
             */
-            em.flush();
-            em.clear();
+//            em.flush(); //db에 값을 세팅하고
+//            em.clear(); //1차캐시에 비운다.
+
+            /**
+             * 위에 flush와 clear를 하지 않아야 하고
+             * JPA없이 테스트를 작성해도 돌아야하고
+             * 객체지향적 관점에서 맞도록 하기 위해서는
+             *
+             * 양방향 메서드를 작성해야한다.
+             * findTeam2.getMembers().add(member);
+             *
+             * 그런데 양쪽으로 추가하는건 번거롭고 실수하기 쉽다
+             * 연관관계 편의 메서드를 작성하자
+             *     >> changeTeam(team) 함수 안에 add(member) 넣기
+             *     >> 연관관계 편의메서드를 한쪽에만 만들자
+             *       : 무한 루프가 걸리거나 복잡해질 수 있다.
+             */
+
             Member findMember3 = em.find(Member.class, member2.getId());
+            // 사용하는 시점에 쿼리를 날려 연관된 내용을 가져온다.
             List<Member> members = findMember3.getTeam().getMembers();
             for (Member member1 : members) {
                 System.out.println("member1.getName() = " + member1.getName());
