@@ -25,6 +25,14 @@ public class Member {
     @OneToMany(mappedBy = "member")
     private List<Order> orders = new ArrayList<>(); //관례상 이게 더 좋다.
 
+    @OneToOne
+    @JoinColumn(name="locker_id")
+    private Locker locker;
+
+    @ManyToMany
+    @JoinTable(name="member_product")
+    private List<Product> products = new ArrayList<>();
+
     public Long getId() {
         return id;
     }
