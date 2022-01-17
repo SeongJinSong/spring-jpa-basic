@@ -4,6 +4,8 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static javax.persistence.FetchType.LAZY;
+
 @Entity
 public class Member extends BaseEntity{
     @Id @GeneratedValue
@@ -14,7 +16,7 @@ public class Member extends BaseEntity{
 //    @Column(name = "team_id")
 //    private Long teamId;
 
-    @ManyToOne
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "team_id")
     private Team team;
 
@@ -25,7 +27,7 @@ public class Member extends BaseEntity{
     @OneToMany(mappedBy = "member")
     private List<Order> orders = new ArrayList<>(); //관례상 이게 더 좋다.
 
-    @OneToOne
+    @OneToOne(fetch = LAZY)
     @JoinColumn(name="locker_id")
     private Locker locker;
 
