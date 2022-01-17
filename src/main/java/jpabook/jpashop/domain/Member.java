@@ -1,13 +1,14 @@
 package jpabook.jpashop.domain;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 import static javax.persistence.FetchType.LAZY;
 
 @Entity
-public class Member extends BaseEntity{
+public class Member { // extends BaseEntity{
     @Id @GeneratedValue
     @Column(name = "member_id")
     private Long id;
@@ -20,10 +21,6 @@ public class Member extends BaseEntity{
     @JoinColumn(name = "team_id")
     private Team team;
 
-    private String city;
-    private String street;
-    private String zipcode;
-
     @OneToMany(mappedBy = "member")
     private List<Order> orders = new ArrayList<>(); //관례상 이게 더 좋다.
 
@@ -34,6 +31,23 @@ public class Member extends BaseEntity{
     @ManyToMany
     @JoinTable(name="member_product")
     private List<Product> products = new ArrayList<>();
+
+    /**
+     * 연관관계 편의 메서드로 만들자
+     *   > setter에 쓰기엔 관례상 오해의 소지가 있다.
+     */
+    public void changeTeam(Team team){
+        this.team = team;
+        team.getMembers().add(this);
+    }
+
+    //기간
+    @Embedded
+    private Period workPeriod;
+
+    //주소
+    @Embedded
+    private Address address;
 
     public Long getId() {
         return id;
@@ -51,38 +65,6 @@ public class Member extends BaseEntity{
         this.name = name;
     }
 
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getStreet() {
-        return street;
-    }
-
-    public void setStreet(String street) {
-        this.street = street;
-    }
-
-    public String getZipcode() {
-        return zipcode;
-    }
-
-    public void setZipcode(String zipcode) {
-        this.zipcode = zipcode;
-    }
-
-//    public Long getTeamId() {
-//        return teamId;
-//    }
-//
-//    public void setTeamId(Long teamId) {
-//        this.teamId = teamId;
-//    }
-
     public Team getTeam() {
         return team;
     }
@@ -91,12 +73,4 @@ public class Member extends BaseEntity{
         this.team = team;
     }
 
-    /**
-     * 연관관계 편의 메서드로 만들자
-     *   > setter에 쓰기엔 관례상 오해의 소지가 있다.
-     */
-    public void changeTeam(Team team){
-        this.team = team;
-        team.getMembers().add(this);
-    }
 }
