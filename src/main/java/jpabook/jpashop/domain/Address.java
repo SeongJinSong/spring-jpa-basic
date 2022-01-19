@@ -7,10 +7,16 @@ import java.util.Objects;
 @Embeddable
 public class Address {
     //주소
+    @Column(length = 10)
     private String city;
+    @Column(length = 20)
     private String street;
-    @Column(name = "zipCode")
+    @Column(name = "zipCode", length = 5)
     private String zipcode;
+
+    public String fullAddress(){
+        return getCity()+" "+getStreet()+" ";
+    }
 
     //private Member member; //이게 가능하다.
 
