@@ -40,7 +40,7 @@ public class JpaMain{
 //            findMember2.setName("HelloB");
 
             //JPQL 조회
-            List<Member> memberList = em.createQuery("select m from Member m", Member.class).getResultList();
+            List<Member> memberList = em.createQuery("select m from JMember m", Member.class).getResultList();
             System.out.println("memberList = " + memberList.size());
 
             /*
