@@ -86,6 +86,28 @@ public class JpaMain{
                     .getResultList();
             System.out.println("name = " + resultList5.get(0).getUsername());
             System.out.println("age = " + resultList5.get(0).getAge());
+
+            /**
+             * 페이징
+             *  orderBy가 되어야 확실히 확인 가능하다.
+             */
+            for(int i=1;i<100;i++){
+                JMember mbr = new JMember();
+                mbr.setUsername("membber"+i);
+                mbr.setAge(i);
+                em.persist(mbr);
+            }
+            em.flush();
+            em.clear();
+            List<JMember> members = em.createQuery("select m from JMember m order by m.age desc", JMember.class)
+                    .setFirstResult(1)
+                    .setMaxResults(10)
+                    .getResultList();
+            System.out.println("members.size() = " + members.size());
+            for (JMember jMember : members) {
+                System.out.println("jMember = " + jMember);
+            }
+
             tx.commit();
         }catch(Exception e){
             tx.rollback();

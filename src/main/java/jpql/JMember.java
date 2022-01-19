@@ -36,4 +36,14 @@ public class JMember {
     public void setAge(int age) {
         this.age = age;
     }
+
+    @Override
+    public String toString() {
+        return "JMember{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", age=" + age +
+//                ", team=" + team + 엔티티는 지우는게 낫다.
+                '}';
+    }
 }
