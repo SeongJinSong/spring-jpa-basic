@@ -16,6 +16,14 @@ public class JTeam {
     @OneToMany(mappedBy = "team")
     private List<JMember> members = new ArrayList<>();
 
+    public List<JMember> getMembers() {
+        return members;
+    }
+
+    public void setMembers(List<JMember> members) {
+        this.members = members;
+    }
+
     public Long getId() {
         return id;
     }

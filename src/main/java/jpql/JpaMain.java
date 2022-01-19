@@ -1,6 +1,8 @@
 package jpql;
 
 
+import jpabook.jpashop.domain.Team;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -95,6 +97,10 @@ public class JpaMain{
                 JMember mbr = new JMember();
                 mbr.setUsername("membber"+i);
                 mbr.setAge(i);
+                JTeam jt = new JTeam();
+                jt.setName("team"+i);
+                em.persist(jt);
+                mbr.changeTeam(jt);
                 em.persist(mbr);
             }
             em.flush();
@@ -107,6 +113,18 @@ public class JpaMain{
             for (JMember jMember : members) {
                 System.out.println("jMember = " + jMember);
             }
+
+            /**
+             * Join
+             */
+            List<JMember> resultList6 = em.createQuery("select m from JMember m inner join m.team t", JMember.class)
+                    .getResultList();
+            System.out.println("resultList6.size() = " + resultList6.size());
+
+            List<JMember> resultList7 = em.createQuery("select m from JMember m left join m.team t on t.name = :name", JMember.class)
+                    .setParameter("name", "teamA")
+                    .getResultList();
+            System.out.println("resultList7.get(0).getUsername() = " + resultList7.get(0).getUsername());
 
             tx.commit();
         }catch(Exception e){
