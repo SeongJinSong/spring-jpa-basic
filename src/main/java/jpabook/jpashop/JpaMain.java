@@ -1,5 +1,7 @@
 package jpabook.jpashop;
 
+import jpabook.jpashop.domain.Address;
+import jpabook.jpashop.domain.AddressEntity;
 import jpabook.jpashop.domain.Member;
 import jpabook.jpashop.domain.Team;
 
@@ -8,6 +10,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import java.util.List;
+import java.util.Set;
 
 public class JpaMain {
     public static void main(String[] args) {
@@ -88,6 +91,60 @@ public class JpaMain {
                 System.out.println("member1.getName() = " + member1.getName());
             }
 
+            /**
+             * 값 타입 컬렉션
+                - 값타입과 같기 때문에 라이프사이클이 멤버에 소속된다!
+             */
+            Member member3 = new Member();
+
+            //저장 예제
+            member3.setName("member1");
+            member3.setHomeAddress(new Address("homeCity", "street", "10000"));
+
+            member3.getFavoriteFoods().add("치킨");
+            member3.getFavoriteFoods().add("족발");
+            member3.getFavoriteFoods().add("피자");
+
+            member3.getAddressHistory().add(new AddressEntity("old1", "street", "20000"));
+            member3.getAddressHistory().add(new AddressEntity("old2", "street", "20000"));
+
+            em.persist(member3);
+
+            //조회 예제
+            em.flush();
+            em.clear();
+            System.out.println("=========== START ================");
+            Member findMember4 = em.find(Member.class, member3.getId());
+            // 컬렉션들은 지연로딩
+
+            List<AddressEntity> addressHistory = findMember4.getAddressHistory();
+            for (AddressEntity address : addressHistory) {
+                System.out.println("address = " + address.getAddress().getCity());
+            }
+            System.out.println("====================================");
+            Set<String> favoriteFoods = findMember4.getFavoriteFoods();
+            for (String favoriteFood : favoriteFoods) {
+                System.out.println("favoriteFood = " + favoriteFood);
+            }
+
+            /** 수정
+                //homeCity-> newCity
+                findMember4.getHomeAddress().setCity("newCity"); 이렇게 하면 절대 안된다.
+             */
+            findMember4.setHomeAddress(new Address("newCity", findMember4.getHomeAddress().getStreet(), findMember4.getHomeAddress().getZipcode()));
+
+            //치킨 -> 한식
+//            findMember4.getFavoriteFoods().remove("치킨");
+//            findMember4.getFavoriteFoods().add("한식");
+
+            /**
+             * 이부분만 실행하면 member에 해당하는 것을 전부 지운후 두개를 insert한다.
+             * 실무에서 헷갈릴 여지가 많다.
+             */
+//            findMember4.getAddressHistory().remove(new Address("old1", "street", "20000"));
+//            findMember4.getAddressHistory().add(new Address("newCity1", "street", "10000"));
+            findMember4.getAddressHistory().remove(new AddressEntity("old1", "street", "20000"));
+            findMember4.getAddressHistory().add(new AddressEntity("newCity1", "street", "10000"));
             tx.commit();
         }catch(Exception e){
             e.printStackTrace();
