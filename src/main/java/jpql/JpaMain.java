@@ -138,6 +138,18 @@ public class JpaMain{
                 System.out.println("object:"+ objects[0]+" "+objects[1]+" "+objects[2]);
             }
 
+            em.flush();
+            em.clear();
+            String casequery ="select\n" +
+                    "\tcase when m.age <= 10 then '학생요금'\n" +
+                    "\t\t\t\twhen m.age >= 60 then '경로요금'\n" +
+                    "\t\t\t\telse '일반요금'\n" +
+                    "\tend\n" +
+                    "from JMember m";
+            List<String> resultList9 = em.createQuery(casequery, String.class).getResultList();
+            for (String s : resultList9) {
+                System.out.println("s = " + s);
+            }
 
             tx.commit();
         }catch(Exception e){
