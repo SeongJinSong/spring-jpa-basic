@@ -178,6 +178,37 @@ public class JpaMain{
             for (Object o : resultList12) {
                 System.out.println("o = " + o);
             }
+
+            /**
+             * ★★★ fetch 조인 ★★★
+             */
+
+            String jpql = "select m from JMember m join fetch m.team";
+            List<JMember> members2 = em.createQuery(jpql, JMember.class).getResultList();
+
+            for (JMember member2 : members2) {
+                //페치 조인으로 회원과 팀을 함께 조회해서 지연 로딩X
+                System.out.println("username = " + member2.getUsername() + ", " +
+                        "teamName = " + member2.getTeam().getName());
+            }
+            /**
+             * 컬렉션 fetch 조인
+             */
+            String jpql2 = "select t from JTeam t join fetch t.members where t.name = 'team2'";
+            List<JTeam> teams2 = em.createQuery(jpql2, JTeam.class).getResultList();
+
+            for(JTeam team : teams2) {
+                System.out.println("teamname = " + team.getName() + ", team = " + team);
+                for (JMember member3 : team.getMembers()) {
+                    //페치 조인으로 팀과 회원을 함께 조회해서 지연 로딩 발생 안함
+                    System.out.println("-> username = " + member.getUsername()+ ", member = " + member);
+                }
+            }
+            /**
+             * fetch join의 페이징
+             *   - 메모리에서 페이징하기 때문에 터질 수 있다.
+             */
+            em.createQuery(jpql2, JTeam.class).setFirstResult(1).setMaxResults(10).getResultList();
             tx.commit();
         }catch(Exception e){
             tx.rollback();
