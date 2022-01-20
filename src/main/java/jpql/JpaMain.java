@@ -220,6 +220,23 @@ public class JpaMain{
             for (JMember jMember : resultList13) {
                 System.out.println("jMember = " + jMember);
             }
+
+            /**
+             * 벌크 연산
+             */
+            String qlString = "update JMember m set m.age = 20 ";
+            int resultCount = em.createQuery(qlString)
+                    .executeUpdate();
+            System.out.println("resultCount = " + resultCount);
+
+            /**
+             *  영속성 컨텍스트에는 반영이 안되어 있다.
+             *  member2.getAge() 하면 20이 아니다.
+             *  em.clear()가 필요하다!
+             *  벌크연산 이전에 썼던 변수 member2는 준영속상태이므로 쓰지말아라
+             *  이후 em.find를 다시해서 영속성컨텍스트에 반영해라
+             */
+
             tx.commit();
         }catch(Exception e){
             tx.rollback();
