@@ -166,6 +166,18 @@ public class JpaMain{
             for (String s : resultList11) {
                 System.out.println("s = " + s);
             }
+
+            /**
+             * 경로표현식
+             *    - 상태 필드
+             *    - 단일 값 연관 경로 : 묵시적 내부 조인(inner join), 탐색(O)
+             *    - 컬렉션 값 연관 경로 : 묵시적 내부 조인, 탐색(X), size만 확인 가능
+             */
+            List resultList12 = em.createQuery("select t.members from JTeam t").getResultList();
+            //컬렉션 값 연관 경로는 size 제외하고 지원하지 않는다.
+            for (Object o : resultList12) {
+                System.out.println("o = " + o);
+            }
             tx.commit();
         }catch(Exception e){
             tx.rollback();
