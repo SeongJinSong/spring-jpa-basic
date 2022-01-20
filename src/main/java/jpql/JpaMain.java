@@ -97,6 +97,7 @@ public class JpaMain{
                 JMember mbr = new JMember();
                 mbr.setUsername("membber"+i);
                 mbr.setAge(i);
+                mbr.setType(MemberType.ADMIN);
                 JTeam jt = new JTeam();
                 jt.setName("team"+i);
                 em.persist(jt);
@@ -125,6 +126,18 @@ public class JpaMain{
                     .setParameter("name", "teamA")
                     .getResultList();
             System.out.println("resultList7.get(0).getUsername() = " + resultList7.get(0).getUsername());
+
+            /**
+             * JPQL 타입 표현
+             */
+            List<Object[]> resultList8 = em.createQuery("select m.username, 'HELLO', true from JMember m " +
+                            "where m.type=jpql.MemberType.ADMIN").getResultList();
+            //쿼리안에 하드코딩해야하면 패키지를 다 넣어야 한다 >> set Parameter을 쓰자
+            //queryDSL은 자바코드를 쓰기때문에 package import가 가능하다.
+            for (Object[] objects : resultList8) {
+                System.out.println("object:"+ objects[0]+" "+objects[1]+" "+objects[2]);
+            }
+
 
             tx.commit();
         }catch(Exception e){
