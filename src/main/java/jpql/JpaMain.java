@@ -209,6 +209,17 @@ public class JpaMain{
              *   - 메모리에서 페이징하기 때문에 터질 수 있다.
              */
             em.createQuery(jpql2, JTeam.class).setFirstResult(1).setMaxResults(10).getResultList();
+
+            /**
+             * Named 쿼리
+             *   - 애플리케이션 로딩 시점에 쿼리 검증 가능!
+             */
+            List<JMember> resultList13 = em.createNamedQuery("JMember.findByUsername", JMember.class)
+                            .setParameter("username", "membber33")
+                            .getResultList();
+            for (JMember jMember : resultList13) {
+                System.out.println("jMember = " + jMember);
+            }
             tx.commit();
         }catch(Exception e){
             tx.rollback();
