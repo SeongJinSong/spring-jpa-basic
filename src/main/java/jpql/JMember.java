@@ -13,6 +13,7 @@ public class JMember {
     @JoinColumn(name = "team_id")
     private JTeam team;
 
+    @Enumerated(EnumType.STRING)
     private MemberType type;
 
     public void changeTeam(JTeam team){
@@ -52,7 +53,6 @@ public class JMember {
         this.team = team;
     }
 
-    @Enumerated(EnumType.STRING)
     public MemberType getType() {
         return type;
     }
