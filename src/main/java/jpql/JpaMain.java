@@ -151,6 +151,21 @@ public class JpaMain{
                 System.out.println("s = " + s);
             }
 
+            /**
+             * JPQL 기본함수
+             */
+            List<Integer> resultList10 = em.createQuery("select size(t.members) from JTeam t").getResultList();
+            for (Integer integer : resultList10) {
+                System.out.println("integer = " + integer);
+            }
+
+            /**
+             * 사용자 정의 함수
+             */
+            List<String> resultList11 = em.createQuery("select function('group_concat', m.username) from JMember m", String.class).getResultList();
+            for (String s : resultList11) {
+                System.out.println("s = " + s);
+            }
             tx.commit();
         }catch(Exception e){
             tx.rollback();
